@@ -7,9 +7,11 @@ import re
 import bbauth.Payment as pay
 import bbdata.TempDataModel as data
 from bbtwilio.SendMessage import *
+from bbdata.generators import GeneratorAPI
 
 
 app = Flask(__name__)
+generatorAPI = GeneratorAPI()
 
 
 @app.route("/test_pay", methods=['GET'])
@@ -142,7 +144,6 @@ def incoming_sms():
 
 
     return str(resp)
-
 
 if __name__ == "__main__":
     app.run(debug=True)
