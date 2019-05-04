@@ -117,16 +117,20 @@ def incoming_sms():
 
     if 'bbhelp' in words:
         resp.message('Thanks for contacting BizBackup - a text-based disaster relief platform. \n\nTo make a payment: use the command "pay $0.01" \n\nTo find closest power: "power 20002" \n\nOther functionality: Include it here..')
-        return str(resp)
+        bbt = SendMessage()
+        return bbt.send(number, str(resp.message))
 
     if 'lookup' in words:
+
+        bbt = SendMessage()
+
         try:
             search_id = re.search(
                 '(\d{11})', body)
             search_id = search_id.group()
         except AttributeError:
             resp.message('Could not find a transaction id in your message.')
-            return str(resp)
+            return bbt.send(number, str(resp))
         try:
             search = pay.Payment()
             details = search.retrieve(search_id)
@@ -134,10 +138,10 @@ def incoming_sms():
                 resp.message('Found transaction details: \nID: {} \nAmount: {} \nStatus: {}'.format(details['id'], details['amount'], details['status']))
             else:
                 resp.message('Could not find a transaction \n\n{}'.format(details['error']))
-            return str(resp)
+            return bbt.send(number, str(resp))
         except BaseException:
             resp.message('Something went wrong.')
-            return str(resp)
+            return bbt.send(number, str(resp))
 
 
 
