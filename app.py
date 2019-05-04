@@ -54,7 +54,7 @@ def store_incoming_sms(message, number):
     save_message = "RECEIVED: {}, FROM: {}".format(message, number)
     data.add_message(save_message, number)
 
-    
+
 @app.route('/transactions-feed')
 def transactions_feed():
     return render_template('transactions.html', messages=transaction_data.get_transactions())
@@ -63,13 +63,13 @@ def transactions_feed():
 def incoming_sms():
     """Send a dynamic reply to an incoming text message"""
     bbt = SendMessage()
-    
+
     # Get the message the user sent our Twilio number
     number = request.form.get('From', None)
     body = request.values.get('Body', None)
-    
+
     # dealing with incoming MMS (image)
-    num_images = request.values.get('NumMedia', None) 
+    num_images = request.values.get('NumMedia', None)
     if num_images != '0':
         filename = request.values.get('MessageSid', None) + '.png'
         with open('{}/{}'.format('bbdata/images', filename), 'wb') as f:
@@ -77,19 +77,21 @@ def incoming_sms():
             f.write(requests.get(image_url).content)
         f.close()
         message = 'Thank you for sending your image. We have started filing your SBA loan claim!'
-        
+
         # this will begin the image saving workflow; images stored in bbdata/images/
         return bbt.send(number, message)
 
     store_incoming_sms(body, number)
-    
+
     # Start our TwiML response
     resp = MessagingResponse()
 
     # Determine the right reply for this message
     if body == 'Hello':
-        print("Sending...")
-        return bbt.send(number, 'Type a message here.')
+        return bbt.send(number, 'Hi friend!')
+
+    elif body == 'Bye':
+        return bbt.send(number, 'See you later!')
 
     # Parse payment command
     words = []
@@ -102,8 +104,6 @@ def incoming_sms():
 
     words = [word.lower() for word in words if isinstance(word, str)]
     if 'pay' in words or 'payment' in words or 'paid' in words:
-        
-        bbt = SendMessage()
 
         # lookup number
         credit_card = ''
@@ -125,17 +125,49 @@ def incoming_sms():
             print("Message has no amount!")
             message = "Message has no body!"
             return bbt.send(number, message)
-        
+
         expiration = "2020-12" # hard coded right now
         payment = pay.Payment()
         transaction_response = payment.send(credit_card, expiration, float(amount))
         transaction_data.add_transaction(transaction_response.transId, float(amount), number)
         return bbt.send(number, "Transaction ID is " + str(transaction_response.transId))
 
+    if 'charge' in words:
+        # only allowed for business business owner
+
+        if number != data.business_phone():
+            print (number)
+            print (data.business_phone())
+            return bbt.send(number,
+                'Only registered merchants can request payments.  Please sign up on our website.'
+            )
+
+        # lookup number
+        phone = ''
+
+        try:
+            phone = re.search(
+                r'(\+\d{11})', body)
+            phone = phone.group()
+        except AttributeError:
+            print('Could not find a phone number.')
+            return bbt.send(number,
+                'To make a charge request, you must include a full phone number like +17035555555'
+            )
+        except IndexError:
+            print("Message has no phone number!")
+            # resp.message("Message has no body!")
+            return str(resp)
+
+        bbt.send(phone, str(data.business_name()) + " has requested a payment from you.  Reply PAY $XX to make a payment with your credit card." )
+        return bbt.send(number, "Confirmed. Payment request sent to "+phone )
+
+
+
     if 'bbhelp' in words:
         resp.message('Thanks for contacting BizBackup - a text-based disaster relief platform. \n\nTo make a payment: use the command "pay $0.01" \n\nTo find closest power: "power 20002" \n\nOther functionality: Include it here..')
         return bbt.send(number, str(resp.message))
-      
+
     if 'lookup' in words:
         try:
             search_id = re.search(
@@ -160,7 +192,7 @@ def incoming_sms():
     if 'energy' in words or 'power' in words or 'generators' in words:
         zipcode = re.search('(\d{5})', body).group(0)
         generators = generatorAPI.zipcodeQuery(zipcode)
-        
+
         message = ''
         i = 1
         for entry in generators:
@@ -172,7 +204,7 @@ def incoming_sms():
             i += 1
         print(message)
         return bbt.send(number, message)
-        
+
     return str(resp)
 
 if __name__ == "__main__":
