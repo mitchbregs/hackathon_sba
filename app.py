@@ -10,7 +10,8 @@ app = Flask(__name__)
 def send_message():
     """Send a text message"""
     bbtwilio = SendMessage()
-    return bbtwilio.send('+0000000000', 'yoo')
+    # Must be a Twilio verified phone number
+    return bbtwilio.send('+0000000000', 'Type a message here.')
 
 
 @app.route('/')
