@@ -9,7 +9,6 @@ app = Flask(__name__)
 
 def send_message():
     """Send a text message"""
-
     bbtwilio = SendMessage()
     return bbtwilio.send('+0000000000', 'yoo')
 
