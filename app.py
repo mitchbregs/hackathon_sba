@@ -1,7 +1,8 @@
 from flask import Flask, request, render_template, redirect
 from twilio.twiml.messaging_response import MessagingResponse
 import os
-import auth.Payment as pay
+
+import bbauth.Payment as pay
 import data.TempDataModel as cards
 from bbtwilio.SendMessage import *
 
