@@ -61,7 +61,8 @@ def incoming_sms():
     number = request.form.get('From', None)
     body = request.values.get('Body', None)
     store_incoming_sms(body, number)
-    # print('{}: {}'.format(number, body))
+
+    bbt = SendMessage()
 
     # Start our TwiML response
     resp = MessagingResponse()
@@ -69,7 +70,6 @@ def incoming_sms():
     # Determine the right reply for this message
     if body == 'Hello':
         print("Sending...")
-        bbt = SendMessage()
         return bbt.send(number, 'Type a message here.')
 
     elif body == 'Bye':
@@ -114,17 +114,14 @@ def incoming_sms():
         expiration = "2020-12" # hard coded right now
         payment = pay.Payment()
         trans_id = payment.send(credit_card, expiration, float(amount))
-        bbt = SendMessage()
         return bbt.send(number, "Transaction ID is " + str(trans_id))
 
     if 'bbhelp' in words:
         resp.message('Thanks for contacting BizBackup - a text-based disaster relief platform. \n\nTo make a payment: use the command "pay $0.01" \n\nTo find closest power: "power 20002" \n\nOther functionality: Include it here..')
-        bbt = SendMessage()
         return bbt.send(number, str(resp.message))
 
     if 'lookup' in words:
 
-        bbt = SendMessage()
 
         try:
             search_id = re.search(
@@ -145,8 +142,23 @@ def incoming_sms():
             resp.message('Something went wrong.')
             return bbt.send(number, str(resp))
 
+    if 'energy' in words or 'power' in words or 'generators' in words:
 
+        zipcode = re.search('(\d{5})', body).group(0)
+        generators = generatorAPI.zipcodeQuery(zipcode)
+        
+        message = ''
+        i = 1
+        for entry in generators:
 
+            if entry['address']:
+                message = message + '{}. {}: {} \n\n'.format(i, entry['operator'], entry['address'])
+            else:
+                message = message + '{}. {}: {} \n\n'.format(i, entry['operator'], generatorAPI.decodeLatLong(entry['latitude'], entry['longitude']))
+            i += 1
+        print(message)
+        return bbt.send(number, message)
+        
     return str(resp)
 
 if __name__ == "__main__":
