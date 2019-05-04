@@ -2,7 +2,7 @@ import os
 from twilio.rest import Client
 import sys
 
-sys.path.insert(0, "../data")
+sys.path.insert(0, "../bbdata")
 
 from bbdata import TempDataModel as data
 
