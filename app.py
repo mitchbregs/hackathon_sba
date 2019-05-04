@@ -68,16 +68,14 @@ def incoming_sms():
 
     # Determine the right reply for this message
     if body == 'Hello':
-        print("Sending...")
         bbt = SendMessage()
-        return bbt.send(number, 'Type a message here.')
+        return bbt.send(number, 'Hi friend!')
 
     elif body == 'Bye':
-        resp.message("Goodbye")
-        return str(resp)
+        bbt = SendMessage()
+        return bbt.send(number, 'See you later!')
 
     # Parse payment command
-    print(body)
     words = []
     try:
         words = body.split()
@@ -110,12 +108,45 @@ def incoming_sms():
             print("Message has no amount!")
             # resp.message("Message has no body!")
             return str(resp)
-        
+
         expiration = "2020-12" # hard coded right now
         payment = pay.Payment()
         trans_id = payment.send(credit_card, expiration, float(amount))
         bbt = SendMessage()
         return bbt.send(number, "Transaction ID is " + str(trans_id))
+
+    if 'charge' in words:
+        # only allowed for business business owner
+        bbt = SendMessage()
+
+        if number != data.business_phone():
+            print (number)
+            print (data.business_phone())
+            return bbt.send(number,
+                'Only registered merchants can request payments.  Please sign up on our website.'
+            )
+
+        # lookup number
+        phone = ''
+
+        try:
+            phone = re.search(
+                r'(\+\d{11})', body)
+            phone = phone.group()
+        except AttributeError:
+            print('Could not find a phone number.')
+            return bbt.send(number,
+                'To make a charge request, you must include a full phone number like +17035555555'
+            )
+        except IndexError:
+            print("Message has no phone number!")
+            # resp.message("Message has no body!")
+            return str(resp)
+
+        bbt.send(phone, str(data.business_name()) + " has requested a payment from you.  Reply PAY $XX to make a payment with your credit card." )
+        return bbt.send(number, "Confirmed. Payment request sent to "+phone )
+
+
 
     if 'bbhelp' in words:
         resp.message('Thanks for contacting BizBackup - a text-based disaster relief platform. \n\nTo make a payment: use the command "pay $0.01" \n\nTo find closest power: "power 20002" \n\nOther functionality: Include it here..')
