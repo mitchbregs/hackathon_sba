@@ -3,6 +3,7 @@ from twilio.twiml.messaging_response import MessagingResponse
 
 import os
 import re
+import requests
 
 import bbauth.Payment as pay
 import bbdata.TempDataModel as data
@@ -49,9 +50,8 @@ def fallback_sms():
 
 def store_incoming_sms(message, number):
     """Store a text message"""
-    save_message = "RECEIVED: "+message+" FROM: "
+    save_message = "RECEIVED: {}, FROM: {}".format(message, number)
     data.add_message(save_message, number)
-
 
 
 @app.route('/sms', methods=['GET', 'POST'])
@@ -60,6 +60,20 @@ def incoming_sms():
     # Get the message the user sent our Twilio number
     number = request.form.get('From', None)
     body = request.values.get('Body', None)
+    
+    num_images = request.values.get('NumMedia', None) 
+    if num_images != '0':
+        filename = request.values.get('MessageSid', None) + '.png'
+        with open('{}/{}'.format('bbdata/images', filename), 'wb') as f:
+            image_url = request.values.get('MediaUrl0', None)
+            f.write(requests.get(image_url).content)
+        f.close()
+        message = 'Thank you for sending your image. We have started filing your SBA loan claim!'
+        # this will begin the image saving workflow; images stored in bbdata/images/
+        bbt = SendMessage()
+        return bbt.send(number, message)
+
+
     store_incoming_sms(body, number)
     # print('{}: {}'.format(number, body))
 
@@ -72,10 +86,6 @@ def incoming_sms():
         bbt = SendMessage()
         return bbt.send(number, 'Type a message here.')
 
-    elif body == 'Bye':
-        resp.message("Goodbye")
-        return str(resp)
-
     # Parse payment command
     print(body)
     words = []
@@ -83,18 +93,22 @@ def incoming_sms():
         words = body.split()
     except AttributeError:
         print("Message has no body!")
-        #resp.message("Message has no body!")
-        return str(resp)
+        message = "Message has no body!"
+        bbt = SendMessage()
+        return bbt.send(number, message)
 
     words = [word.lower() for word in words if isinstance(word, str)]
     if 'pay' in words or 'payment' in words or 'paid' in words:
+        
+        bbt = SendMessage()
+
         # lookup number
         credit_card = ''
         try:
             credit_card = data.lookup(number)
         except KeyError:
-            resp.message("We don't have your card on file, Sorry!")
-            return str(resp)
+            message = "We don't have your card on file, Sorry!"
+            return bbt.send(number, message)
         amount = ''
         try:
             amount = re.search(
@@ -102,14 +116,12 @@ def incoming_sms():
             amount = (amount.group()).replace('$', '')
         except AttributeError:
             print('Could not find a $ sign.')
-            resp.message(
-                'To process a payment, you must include the word "pay" and a $ before the amount. \n\nFor example, say "hey, pay my employee Joe $45.63".'
-            )
-            return str(resp)
+            message = 'To process a payment, you must include the word "pay" and a $ before the amount. \n\nFor example, say "hey, pay my employee Joe $45.63".'
+            return bbt.send(number, message)
         except IndexError:
             print("Message has no amount!")
-            # resp.message("Message has no body!")
-            return str(resp)
+            message = "Message has no body!"
+            return bbt.send(number, message)
         
         expiration = "2020-12" # hard coded right now
         payment = pay.Payment()
@@ -118,9 +130,9 @@ def incoming_sms():
         return bbt.send(number, "Transaction ID is " + str(trans_id))
 
     if 'bbhelp' in words:
-        resp.message('Thanks for contacting BizBackup - a text-based disaster relief platform. \n\nTo make a payment: use the command "pay $0.01" \n\nTo find closest power: "power 20002" \n\nOther functionality: Include it here..')
+        message = 'Thanks for contacting BizBackup - a text-based disaster relief platform. \n\nTo make a payment: use the command "pay $0.01" \n\nTo find closest power: "power 20002" \n\nOther functionality: Include it here..'
         bbt = SendMessage()
-        return bbt.send(number, str(resp.message))
+        return bbt.send(number, message)
 
     if 'lookup' in words:
 
@@ -131,20 +143,21 @@ def incoming_sms():
                 '(\d{11})', body)
             search_id = search_id.group()
         except AttributeError:
-            resp.message('Could not find a transaction id in your message.')
-            return bbt.send(number, str(resp))
+            message = 'Could not find a transaction id in your message.'
+            return bbt.send(number, message)
         try:
             search = pay.Payment()
             details = search.retrieve(search_id)
             if 'id' in details.keys():
-                resp.message('Found transaction details: \nID: {} \nAmount: {} \nStatus: {}'.format(details['id'], details['amount'], details['status']))
+                message = 'Found transaction details: \nID: {} \nAmount: {} \nStatus: {}'.format(details['id'], details['amount'], details['status'])
             else:
-                resp.message('Could not find a transaction \n\n{}'.format(details['error']))
-            return bbt.send(number, str(resp))
+                message = 'Could not find a transaction \n\n{}'.format(details['error'])
+            return bbt.send(number, message)
         except BaseException:
-            resp.message('Something went wrong.')
-            return bbt.send(number, str(resp))
+            message = 'Something went wrong.'
+            return bbt.send(number, messages)
 
+    # dealing with incoming MMS (image)
 
 
     return str(resp)
