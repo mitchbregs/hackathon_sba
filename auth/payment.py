@@ -5,14 +5,15 @@ import os
 
 
 def send_payment(amount):
-    print amount
+    print(amount)
 
     merchantAuth = apicontractsv1.merchantAuthenticationType()
-    merchantAuth.name =os.environ['AUTH_API_LOGIN']
-    merchantAuth.transactionKey =os.environ['AUTH_TRANSACTION_KEY']
+    merchantAuth.name = os.environ['AUTH_API_LOGIN']
+    merchantAuth.transactionKey = os.environ['AUTH_TRANSACTION_KEY']
 
     creditCard = apicontractsv1.creditCardType()
     creditCard.cardNumber ="4111111111111111"
+    # 5424000000000015
     creditCard.expirationDate ="2020-12"
 
     payment = apicontractsv1.paymentType()
@@ -20,7 +21,7 @@ def send_payment(amount):
 
     transactionrequest = apicontractsv1.transactionRequestType()
     transactionrequest.transactionType ="authCaptureTransaction"
-    transactionrequest.amount = Decimal ('1.55')
+    transactionrequest.amount = Decimal('1.55')
     transactionrequest.payment = payment
 
 
@@ -35,8 +36,8 @@ def send_payment(amount):
     response = createtransactioncontroller.getresponse()
     if (response.messages.resultCode=="Ok"):
         transactionID = response.transactionResponse.transId
-        print"Transaction ID : %s"% transactionID
+        print("Transaction ID : %s"% transactionID)
         return transactionID
     else:
-        print"response code: %s"% response.messages.resultCode
-        return "Transaction failed"
+        print("response code: %s"% response.messages.resultCode)
+        return("Transaction failed")

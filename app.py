@@ -1,7 +1,16 @@
 from flask import Flask, request, redirect
 from twilio.twiml.messaging_response import MessagingResponse
+import os
+import auth.payment as pay
 
 app = Flask(__name__)
+
+@app.route("/test_pay", methods=['GET'])
+def test_pay():
+    """Send a test payment"""
+    transactionID = pay.send_payment(999)
+    return "transactionID is "+str(transactionID)
+
 
 @app.route("/sms", methods=['GET', 'POST'])
 def incoming_sms():
@@ -18,6 +27,9 @@ def incoming_sms():
         resp.message("Hi!")
     elif body == 'bye':
         resp.message("Goodbye")
+    elif body == 'pay':
+	    transactionID = 12345
+	    resp.message(transactionID)
 
     return str(resp)
 
