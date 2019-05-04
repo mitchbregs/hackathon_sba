@@ -1,9 +1,0 @@
-Twilio:
-
-1) Send and recieve text messages:
--- https://www.youtube.com/watch?v=cZeCz_QOoXw
-
-NLTK Chatbot:
-
-1) Basic chatbot
--- https://medium.com/analytics-vidhya/building-a-simple-chatbot-in-python-using-nltk-7c8c8215ac6e
