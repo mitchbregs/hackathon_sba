@@ -4,7 +4,7 @@ import sys
 
 sys.path.insert(0, "../data")
 
-from data import TempDataModel as data
+from bbdata import TempDataModel as data
 
 class SendMessage:
 

@@ -7,7 +7,7 @@ import re
 import bbauth.Payment as pay
 import bbdata.TempDataModel as data
 from bbtwilio.SendMessage import *
-from genorators import GeneratorAPI
+from bbdata.generators import GeneratorAPI
 
 
 app = Flask(__name__)
