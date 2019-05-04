@@ -18,12 +18,15 @@ def test_pay():
     transactionID = pay.send_test_payment(999)
     return "transactionID is " + str(transactionID)
 
-
 def send_message():
     """Send a text message"""
     bbtwilio = SendMessage()
     # Must be a Twilio verified phone number
     return bbtwilio.send('+0000000000', 'Type a message here.')
+
+@app.route('/live-feed')
+def live_feed():
+    return render_template('live-feed.html', messages=data.get_sms())
 
 
 @app.route('/')
@@ -42,6 +45,12 @@ def fallback_sms():
     resp = MessagingResponse()
     return str(resp)
 
+def store_incoming_sms(message, number):
+    """Store a text message"""
+    save_message = "RECEIVED: "+message+" FROM: "
+    data.add_message(save_message, number)
+
+
 
 @app.route('/sms', methods=['GET', 'POST'])
 def incoming_sms():
@@ -49,7 +58,8 @@ def incoming_sms():
     # Get the message the user sent our Twilio number
     number = request.form.get('From', None)
     body = request.values.get('Body', None)
-    print('{}: {}'.format(number, body))
+    store_incoming_sms(body, number)
+    # print('{}: {}'.format(number, body))
 
     # Start our TwiML response
     resp = MessagingResponse()
@@ -79,7 +89,7 @@ def incoming_sms():
         # lookup number
         credit_card = ''
         try:
-            credit_card = cards.lookup(number)
+            credit_card = data.lookup(number)
         except KeyError:
             resp.message("We don't have your card on file, Sorry!")
             return str(resp)
