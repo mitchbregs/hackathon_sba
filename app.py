@@ -1,32 +1,25 @@
-from flask import Flask, Response, request
-from twilio import twiml
-
+from flask import Flask, request, redirect
+from twilio.twiml.messaging_response import MessagingResponse
 
 app = Flask(__name__)
 
+@app.route("/sms", methods=['GET', 'POST'])
+def incoming_sms():
+    """Send a dynamic reply to an incoming text message"""
+    # Get the message the user sent our Twilio number
+    body = request.values.get('Body', None)
+    print(body)
 
-@app.route("/")
-def check_app():
-    # returns a simple string stating the app is working
-    return Response("It works!"), 200
+    # Start our TwiML response
+    resp = MessagingResponse()
 
+    # Determine the right reply for this message
+    if body == 'hello':
+        resp.message("Hi!")
+    elif body == 'bye':
+        resp.message("Goodbye")
 
-@app.route("/twilio", methods=["POST"])
-def inbound_sms():
-
-    import pdb; pdb.set_trace()
-    response = twiml.Response()
-    # we get the SMS message from the request. we could also get the 
-    # "To" and the "From" phone number as well
-    inbound_message = request.form.get("Body")
-    # we can now use the incoming message text in our Python application
-    if inbound_message == "Hello":
-        response.message("Hello back to you!")
-    else:
-        response.message("Hi! Not quite sure what you meant, but okay.")
-    # we return back the mimetype because Twilio needs an XML response
-    return Response(str(response), mimetype="application/xml"), 200
-
+    return str(resp)
 
 if __name__ == "__main__":
     app.run(debug=True)
