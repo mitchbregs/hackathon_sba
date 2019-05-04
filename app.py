@@ -5,6 +5,7 @@ import os
 import re
 
 import bbauth.Payment as pay
+import bbauth.TransactionsDataModel as transaction_data
 import bbdata.TempDataModel as data
 from bbtwilio.SendMessage import *
 from bbdata.generators import GeneratorAPI
@@ -52,7 +53,9 @@ def store_incoming_sms(message, number):
     save_message = "RECEIVED: "+message+" FROM: "
     data.add_message(save_message, number)
 
-
+@app.route('/transactions-feed')
+def transactions_feed():
+    return render_template('transactions.html', messages=transaction_data.get_transactions())
 
 @app.route('/sms', methods=['GET', 'POST'])
 def incoming_sms():
@@ -77,7 +80,6 @@ def incoming_sms():
         return str(resp)
 
     # Parse payment command
-    print(body)
     words = []
     try:
         words = body.split()
@@ -113,8 +115,9 @@ def incoming_sms():
         
         expiration = "2020-12" # hard coded right now
         payment = pay.Payment()
-        trans_id = payment.send(credit_card, expiration, float(amount))
-        return bbt.send(number, "Transaction ID is " + str(trans_id))
+        transaction_response = payment.send(credit_card, expiration, float(amount))
+        transaction_data.add_transaction(transaction_response.transId, float(amount), number)
+        return bbt.send(number, "Transaction ID is " + str(transaction_response.transId))
 
     if 'bbhelp' in words:
         resp.message('Thanks for contacting BizBackup - a text-based disaster relief platform. \n\nTo make a payment: use the command "pay $0.01" \n\nTo find closest power: "power 20002" \n\nOther functionality: Include it here..')

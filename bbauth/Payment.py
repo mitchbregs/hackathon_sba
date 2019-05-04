@@ -44,8 +44,7 @@ class Payment:
         response = createtransactioncontroller.getresponse()
 
         if (response.messages.resultCode=="Ok"):
-            transactionID = response.transactionResponse.transId
-            return transactionID
+            return response.transactionResponse   
         else:
             return response.messages.resultCode
 
