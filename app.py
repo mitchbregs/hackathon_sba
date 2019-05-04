@@ -5,7 +5,7 @@ import os
 import re
 
 import bbauth.Payment as pay
-import bbdata.TempDataModel as cards
+import bbdata.TempDataModel as data
 from bbtwilio.SendMessage import *
 
 
@@ -98,6 +98,8 @@ def incoming_sms():
             print("Message has no amount!")
             # resp.message("Message has no body!")
             return str(resp)
+        
+        expiration = "2020-12" # hard coded right now
         payment = pay.Payment()
         trans_id = payment.send(credit_card, expiration, float(amount))
         bbt = SendMessage()
