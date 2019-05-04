@@ -2,8 +2,7 @@ import os
 from twilio.rest import Client
 import sys
 
-sys.path.insert(0, "../bbdata")
-
+sys.path.insert(0, "~/Projects/hackathon_sba/src/bbdata")
 from bbdata import TempDataModel as data
 
 class SendMessage:
@@ -26,6 +25,19 @@ class SendMessage:
         )
         # log message
         # SENT: message TO:
-        data.add_message("SENT: "+str(message_text)+" TO: ", str(receiver))
+        data.add_message("SENT: {}; TO: {}".format(str(message_text), str(receiver)), receiver)
+
+        return message.sid
+
+    def send_mms(self, receiver, message_text, message_image):
+
+        client = Client(self.account_sid, self.auth_token)
+        
+        message = client.messages.create(
+                body=messge_text,
+                from_=self.phone_num,
+                media_url=message_image,
+                to=receiver
+        )
 
         return message.sid
