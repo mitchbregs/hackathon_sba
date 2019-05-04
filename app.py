@@ -29,7 +29,8 @@ def send_message():
 def index():
     return render_template('index.html')
 
-@app.route('/err', methods=['GET', 'POST'])
+
+@app.route('/error', methods=['GET', 'POST'])
 def fallback_sms():
     """Send a dynamic reply to an incoming text message"""
     # Get the message the user sent our Twilio number
@@ -74,7 +75,7 @@ def incoming_sms():
         return str(resp)
 
 
-    if(words[0] == 'PAY'):
+    if words[0].lower() == 'pay':
         #lookup number
         credit_card = ''
         try:
