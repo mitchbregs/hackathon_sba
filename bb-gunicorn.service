@@ -1,0 +1,12 @@
+[Unit]
+Description=gunicorn flask service wrapper
+After=network.target
+
+[Service]
+WorkingDirectory=/home/ubuntu/hackathon-sba
+ExecStart=/home/ubuntu/.local/bin/gunicorn app:APP --bind 0.0.0.0:5000 --log-file=/var/log/app.log
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target reboot.target
