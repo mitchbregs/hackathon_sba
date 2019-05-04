@@ -59,6 +59,11 @@ def store_incoming_sms(message, number):
 def transactions_feed():
     return render_template('transactions.html', messages=transaction_data.get_transactions())
 
+@app.route('/claims-feed')
+def claims_feed():
+    return render_template('claims.html', images=transaction_data.get_claims()) 
+
+
 @app.route('/sms', methods=['GET', 'POST'])
 def incoming_sms():
     """Send a dynamic reply to an incoming text message"""
@@ -72,13 +77,14 @@ def incoming_sms():
     num_images = request.values.get('NumMedia', None)
     if num_images != '0':
         filename = request.values.get('MessageSid', None) + '.png'
-        with open('{}/{}'.format('bbdata/images', filename), 'wb') as f:
+        with open('{}/{}'.format('static/mms', filename), 'wb') as f:
             image_url = request.values.get('MediaUrl0', None)
             f.write(requests.get(image_url).content)
         f.close()
         message = 'Thank you for sending your image. We have started filing your SBA loan claim!'
 
         # this will begin the image saving workflow; images stored in bbdata/images/
+        transaction_data.add_claim(number, filename)    
         return bbt.send(number, message)
 
     store_incoming_sms(body, number)
