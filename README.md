@@ -121,6 +121,6 @@ Text `bbhelp` to your Twilio phone number to learn more about what BizBackup can
 
 ## References
 
-[Small Business Week Hackathon - SBA (Sponsored by Visa and Authorize.net](https://smallbizweek.hackathon.com/)
+[Small Business Week Hackathon - SBA (Sponsored by Visa and Authorize.net)](https://smallbizweek.hackathon.com/)
 
 
