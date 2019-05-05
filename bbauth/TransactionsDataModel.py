@@ -11,7 +11,7 @@ def add_transaction(transaction, amount, number):
     insert_row = [timestamp, transaction, amount, number]
     transactions.append(insert_row)
 
-images = []
+images = [{'ts': "2019-05-05 01:02:49.422634", 'image_path':"MM7714faf33436069222249dca4a9fc105.png", 'sender':"+15716789254"}]
 
 def get_claims():
     return images
