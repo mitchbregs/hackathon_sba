@@ -66,8 +66,13 @@ Make sure to add the phone number you will be texting with to Verified Numbers o
 
 ##### Sitemap
 
-`localhost:5000/home`
-`localhost:5000/live-feed`
+http://localhost:5000/home
+
+http://localhost:5000/live-feed
+
+http://localhost:5000/transactions-feed
+
+http://localhost:5000/claims-feed
 
 ## Usage
 
