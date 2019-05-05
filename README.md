@@ -119,10 +119,10 @@ Text `bbhelp` to your Twilio phone number to learn more about what BizBackup can
 
 ### Authors
 
-> ##### Mitchell Bregman (https://github.com/mitchbregs)
-> ##### Jack Carlson (https://github.com/JACflip55)
-> ##### Walter Carlson (https://github.com/wfcarlson)
-> ##### Braxton Croley (https://github.com/braxtoncroley)
+> Mitchell Bregman (https://github.com/mitchbregs)
+> Jack Carlson (https://github.com/JACflip55)
+> Walter Carlson (https://github.com/wfcarlson)
+> Braxton Croley (https://github.com/braxtoncroley)
 
 ## References
 
