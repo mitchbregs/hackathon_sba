@@ -84,15 +84,15 @@ http://localhost:5000/claims-feed
 
 #### Charge
 
-Text `charge +1800555555` to your Twilio phone number.
+Text `charge +1800555555` to your Twilio phone number to charge +1800555555 for a payment.
 
 #### Pay
 
-Text `pay $0.01` to your Twilio phone number.
+Text `pay $0.01` to your Twilio phone number to accept and complete payment request.
 
 #### Lookup
 
-Text `lookup 00000000` (TransactionID) to Twilio phone number.
+Text `lookup 00000000` (TransactionID) to Twilio phone number to lookup status of transaction.
 
 ### Claims
 
@@ -100,15 +100,15 @@ Text `lookup 00000000` (TransactionID) to Twilio phone number.
 
 #### Start claim process
 
-Text an image to your Twilio phone number.
+Text an image to your Twilio phone number to start filing a relief loan claim.
 
 ### BizAppSuite
 
-Text `power 24141` to your Twilio phone number.
+Text `power 24141` to your Twilio phone number to get the closest publicly available power sources near you.
 
 ### BBHelp
 
-Text `bbhelp` to your Twilio phone number.
+Text `bbhelp` to your Twilio phone number to learn more about what BizBackup can do.
 
 ## Usage
 
