@@ -16,6 +16,13 @@ app = Flask(__name__)
 generatorAPI = GeneratorAPI()
 
 
+@app.route("/print-data", methods=['GET'])
+def print_data():
+    """Send a test payment"""
+    data.print_data_models()
+    return "Done"
+
+
 @app.route("/test_pay", methods=['GET'])
 def test_pay():
     """Send a test payment"""
@@ -61,7 +68,7 @@ def transactions_feed():
 
 @app.route('/claims-feed')
 def claims_feed():
-    return render_template('claims.html', images=transaction_data.get_claims()) 
+    return render_template('claims.html', images=transaction_data.get_claims())
 
 
 @app.route('/sms', methods=['GET', 'POST'])
@@ -81,10 +88,10 @@ def incoming_sms():
             image_url = request.values.get('MediaUrl0', None)
             f.write(requests.get(image_url).content)
         f.close()
-        message = 'Thank you for sending your image. We have started filing your SBA loan claim!'
+        message = 'Thank you for sending your image. We have backed it up for your SBA loan application or insurance claim!'
 
         # this will begin the image saving workflow; images stored in bbdata/images/
-        transaction_data.add_claim(number, filename)    
+        transaction_data.add_claim(number, filename)
         return bbt.send(number, message)
 
     store_incoming_sms(body, number)
@@ -136,7 +143,8 @@ def incoming_sms():
         payment = pay.Payment()
         transaction_response = payment.send(credit_card, expiration, float(amount))
         transaction_data.add_transaction(transaction_response.transId, float(amount), number)
-        return bbt.send(number, "Transaction ID is " + str(transaction_response.transId))
+        bbt.send(number, "Transaction ID is " + str(transaction_response.transId))
+        return bbt.send(data.business_phone(), "You've been paid. Transaction ID is " + str(transaction_response.transId))
 
     if 'charge' in words:
         # only allowed for business business owner
