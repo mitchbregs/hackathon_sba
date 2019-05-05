@@ -77,15 +77,13 @@ http://localhost:5000/home
 
 http://localhost:5000/live-feed
 
-http://localhost:5000/transactions-feed
-
-http://localhost:5000/claims-feed
+more below...
 
 ## Usage
 
 ### Transactions
 
-`localhost:5000/transactions-feed`
+http://localhost:5000/transactions-feed
 
 ##### Charge
 
@@ -101,7 +99,7 @@ Text `lookup 00000000000` (TransactionID) to Twilio phone number to lookup statu
 
 ### Claims
 
-`localhost:5000/claims-feed`
+http://localhost:5000/claims-feed
 
 ##### Start claim process
 
