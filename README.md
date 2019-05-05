@@ -38,7 +38,7 @@ export AUTH_API_LOGIN="XXX"
 # Twilio credentials
 export TWILIO_SID="XXX"
 export TWILIO_TOKEN="XXX"
-export TWILIO_NUMBER="XXX"
+export TWILIO_NUMBER="+1XXXXXXXXXX"
 
 # Google Maps credentials
 export GOOGLE_API_KEY="XXX"
@@ -95,7 +95,7 @@ Text `pay $0.01` to your Twilio phone number to accept and complete payment requ
 
 #### Lookup
 
-Text `lookup 00000000` (TransactionID) to Twilio phone number to lookup status of transaction.
+Text `lookup 00000000000` (TransactionID) to Twilio phone number to lookup status of transaction.
 
 ### Claims
 
