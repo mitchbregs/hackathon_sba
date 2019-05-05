@@ -86,7 +86,7 @@ http://localhost:5000/transactions-feed
 
 ##### Charge
 
-Text `charge +18005554444` to your Twilio phone number to charge +1800555555 for a payment.
+Text `charge +18005554444` to your Twilio phone number to charge +18005554444 for a payment.
 
 ##### Pay
 
