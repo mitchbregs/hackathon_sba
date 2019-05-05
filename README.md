@@ -63,7 +63,7 @@ and you will see something like this: http://3301c6e7.ngrok.io
 
 [Access here](https://www.twilio.com/console/phone-numbers/)
 
-Make sure to add the phone number you will be texting with to Verified Numbers on Twilio Console.
+Make sure to add the phone number you will be texting with to Verified Numbers on [Twilio Console](https://www.twilio.com/console/).
 
 #### Run the app
 
