@@ -102,7 +102,7 @@ Text an image to your Twilio phone number.
 
 ### BizAppSuite
 
-Text `i need power 24141` to your Twilio phone number.
+Text `power 24141` to your Twilio phone number.
 
 ### BBHelp
 
