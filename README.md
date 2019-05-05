@@ -87,7 +87,7 @@ http://localhost:5000/claims-feed
 
 #### Charge
 
-Text `charge +1800555555` to your Twilio phone number to charge +1800555555 for a payment.
+Text `charge +18005554444` to your Twilio phone number to charge +1800555555 for a payment.
 
 #### Pay
 
