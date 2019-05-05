@@ -28,7 +28,7 @@ Text-message based disaster relief. Do more with less!
 `pip install -r requirements.txt`
 
 
-### Create a `.env` file in root directory
+### Create a `.env` file
  `vim .env`
  
 ##### Place the following here:
