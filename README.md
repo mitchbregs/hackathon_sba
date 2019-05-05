@@ -50,7 +50,7 @@ export GOOGLE_API_KEY="XXX"
 ##### Eventually:
 `./ngrok http 5000`
 
-And you will see something like this: http://3301c6e7.ngrok.io
+and you will see something like this: http://3301c6e7.ngrok.io
 
 ### Set Twilio webhook endpoint
 
