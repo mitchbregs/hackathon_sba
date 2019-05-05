@@ -69,7 +69,7 @@ Make sure to add the phone number you will be texting with to Verified Numbers o
 
 #### Go to website
 
-`localhost:5000/`
+http://localhost:5000/
 
 ##### Sitemap
 
