@@ -34,7 +34,7 @@ class SendMessage:
         client = Client(self.account_sid, self.auth_token)
         
         message = client.messages.create(
-                body=messge_text,
+                body=message_text,
                 from_=self.phone_num,
                 media_url=message_image,
                 to=receiver
