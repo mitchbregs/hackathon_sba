@@ -85,15 +85,15 @@ http://localhost:5000/claims-feed
 
 `localhost:5000/transactions-feed`
 
-#### Charge
+##### Charge
 
 Text `charge +18005554444` to your Twilio phone number to charge +1800555555 for a payment.
 
-#### Pay
+##### Pay
 
 Text `pay $0.01` to your Twilio phone number to accept and complete payment request.
 
-#### Lookup
+##### Lookup
 
 Text `lookup 00000000000` (TransactionID) to Twilio phone number to lookup status of transaction.
 
@@ -101,11 +101,13 @@ Text `lookup 00000000000` (TransactionID) to Twilio phone number to lookup statu
 
 `localhost:5000/claims-feed`
 
-#### Start claim process
+##### Start claim process
 
 Text an image to your Twilio phone number to start filing a relief loan claim.
 
 ### BBApps
+
+##### Electricity
 
 Text `power 24141` to your Twilio phone number to get the closest publicly available power sources near you.
 
