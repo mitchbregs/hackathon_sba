@@ -107,7 +107,7 @@ Text `bbhelp` to your Twilio phone number.
 
 ### Authors
 
-#### Mitchell Bregman (github.com/mitchbregs)
+#### Mitchell Bregman (https://github.com/mitchbregs)
 #### Jack Carlson (https://github.com/JACflip55)
 #### Walter Carlson (https://github.com/wfcarlson)
 #### Braxton Croley (https://github.com/braxtoncroley)
