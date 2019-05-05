@@ -77,7 +77,6 @@ http://localhost:5000/home
 
 http://localhost:5000/live-feed
 
-more below...
 
 ## Usage
 
