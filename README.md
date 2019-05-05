@@ -4,6 +4,8 @@
 
 Text-message based disaster relief. Do more with less!
 
+[Small Business Week Hackathon 2019 - SBA (Sponsored by Visa and Authorize.net)](https://smallbizweek.hackathon.com/)
+
 ## Setup
 
 ### Create a `virtualenv`
@@ -126,9 +128,5 @@ Text `bbhelp` to your Twilio phone number to learn more about what BizBackup can
 > Walter Carlson (https://github.com/wfcarlson)
 
 > Braxton Croley (https://github.com/braxtoncroley)
-
-## References
-
-[Small Business Week Hackathon 2019 - SBA (Sponsored by Visa and Authorize.net)](https://smallbizweek.hackathon.com/)
 
 
