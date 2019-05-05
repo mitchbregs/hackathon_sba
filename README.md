@@ -7,11 +7,13 @@ Text-message based disaster relief. Do more with less!
 ## Setup
 
 ### Create a `virtualenv`
-`$ virtualenv my_env_name --python=python3`
+`virtualenv my_env_name --python=python3`
+
+`cd my_env_name`
 
 
 ### Activate `my_env_name`
-`$ source bin/activate`
+`source bin/activate`
 
 
 ### Clone `hackathon_sba` repo
