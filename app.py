@@ -179,8 +179,8 @@ def incoming_sms():
 
 
     if 'bbhelp' in words:
-        resp.message('Thanks for contacting BizBackup - a text-based disaster relief platform. \n\nTo make a payment: use the command "pay $0.01" \n\nTo find closest power: "power 20002" \n\nOther functionality: Include it here..')
-        return bbt.send(number, str(resp.message))
+        message = 'Thanks for contacting BizBackup - a text-based disaster relief platform. \n\nTo make a payment: use the command "pay $0.01" \n\nTo find closest power: "power 20002" \n\nOther functionality: Include it here..'
+        return bbt.send(number, message)
 
     if 'lookup' in words:
         try:
