@@ -42,7 +42,6 @@ export TWILIO_NUMBER="XXX"
 
 # Google Maps credentials
 export GOOGLE_API_KEY="XXX"
- 
  ```
  
 ##### Source it:
