@@ -32,7 +32,7 @@ Text-message based disaster relief. Do more with less!
  `vim .env`
  
 ##### Place the following here:
- ```
+ ```bash
 # Authorize.net API credentials
 export AUTH_TRANSACTION_KEY="XXX"
 export AUTH_API_LOGIN="XXX"
