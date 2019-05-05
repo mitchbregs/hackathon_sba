@@ -102,7 +102,7 @@ Text `lookup 00000000` (TransactionID) to Twilio phone number to lookup status o
 
 Text an image to your Twilio phone number to start filing a relief loan claim.
 
-### BizAppSuite
+### Apps
 
 Text `power 24141` to your Twilio phone number to get the closest publicly available power sources near you.
 
