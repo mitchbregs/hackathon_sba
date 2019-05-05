@@ -17,6 +17,8 @@ Text-message based disaster relief. Do more with less!
 ### Clone `hackathon_sba` repo
 `git clone https://github.com/mitchbregs/hackathon_sba.git`
 
+`cd hackathon_sba`
+
 
 ### Install all requirements
 `pip install -r requirements.txt`
